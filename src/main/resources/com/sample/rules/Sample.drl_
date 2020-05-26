@@ -1,0 +1,49 @@
+package com.sample
+ 
+import com.sample.data.*
+import com.sample.helper.*
+import java.time.Period;
+import function com.sample.helper.PeriodComparer.LT;
+import function com.sample.helper.PeriodComparer.GE;
+
+
+global com.sample.data.CheckResult checkResult;
+global java.lang.Integer check_person_pk;
+
+
+/* 
+rule "Has 1001"
+	@rule_level(0)
+    when
+        $p:Person(person_pk == check_person_pk)
+        $pd: PersonData(person_pk == $p.person_pk , atom_type == AtomType.BENEFIT_CATEGORY, atom_id == "1001" , atom_state == true, atom_value == true)
+        
+    then
+        System.out.println("Person has BC 1001. Person.person_pk=" + $p.person_pk);
+        checkResult.setRuleResult(drools.getRule().getName(), 0, true);
+end
+
+rule "Another person Has 1002"
+    when
+        $p:Person(person_pk != check_person_pk)
+        $pd: PersonData(person_pk == $p.person_pk , atom_type == AtomType.BENEFIT_CATEGORY, atom_id == "1002" , atom_state == true, atom_value == true)
+        
+    then
+        System.out.println("Another Person has BC 1001. Person.person_pk=" + $p.person_pk);
+end
+
+rule "Another person Has 1002 and age less then 16"
+    when
+        $p:Person(person_pk != check_person_pk)
+        $pd: PersonData(person_pk == $p.person_pk , atom_type == AtomType.BENEFIT_CATEGORY, atom_id == "1002" , atom_state == true, atom_value == true)
+        $pd2: PersonData(person_pk == $p.person_pk , atom_type == AtomType.UZSFO , atom_id == "010012" , atom_state == true, LT(atom_value, "P16Y"))
+        
+    then
+        System.out.println("Another Person has BC 1001 and age < 16. Person.person_pk=" + $p.person_pk);
+end
+*/
+
+
+
+
+

@@ -1,0 +1,119 @@
+//created on: 18.05.2020
+package com.sample
+
+//list any import classes here.
+import com.sample.data.*;
+import com.sample.helpers.*;
+import com.sample.processcontext.*;
+import java.time.Period;
+import function com.sample.helpers.PeriodComparer.LT;
+import function com.sample.helpers.PeriodComparer.GE;
+
+
+//declare any global variables here
+global DataContext datacontext;
+//global Integer CHECK_CITIZEN_PK;
+//global Integer FAMILY1;
+
+rule "1001_FAMILY"
+ruleflow-group "1001_FAMILY"
+when 
+	$par:Param(name == "CHECK_CITIZEN_PK")
+	$p:Person(person_pk != $par.oValue)
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало " +$p.person_pk);
+  datacontext.setRuleResult("1001_FAMILY", true, $p.person_pk);
+end
+
+
+rule "1001_FAMILY_N"
+ruleflow-group "1001_FAMILY"
+when
+	not	(
+	$par:Param(name == "CHECK_CITIZEN_PK")
+	and Person(person_pk != $par.oValue)
+	)
+then
+  System.out.println(drools.getRule().getName() + ":Правило сработало ");
+  datacontext.setRuleResult("1001_FAMILY", false, null);
+end
+
+rule "1001_HAS_1002"
+ruleflow-group "1001_HAS_1002"
+when 
+	$par:Param(name == "FAMILY1")
+	$p:Person(person_pk == $par.oValue)
+   	$pd1: PersonData(person_pk == $p.person_pk, atom_type == AtomType.BENEFIT_CATEGORY, atom_id == "1002", atom_state == true, atom_value == true)
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало ");
+  datacontext.setRuleResult("1001_HAS_1002", true, $p.person_pk);
+end
+
+rule "1001_HAS_1002_N"
+ruleflow-group "1001_HAS_1002"
+when 
+	not(
+	$par:Param(name == "FAMILY1")
+	and $p:Person(person_pk == $par.oValue)
+   	and PersonData(person_pk == $p.person_pk, atom_type == AtomType.BENEFIT_CATEGORY, atom_id == "1002", atom_state == true, atom_value == true)
+   	)
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало");
+  datacontext.setRuleResult("1001_HAS_1002", false, null);
+end
+
+
+rule "1001_AGE_LT_16"
+ruleflow-group "1001_AGE_LT_16"
+when 
+	$par:Param(name == "FAMILY1")
+	$p:Person(person_pk == $par.oValue)
+   	//$pd1: PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, LT(atom_value,"P16Y"))
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало" +$p.person_pk);
+  datacontext.setRuleResult("1001_AGE_LT_16", true, $p.person_pk);
+end
+
+rule "1001_AGE_LT_16_N"
+ruleflow-group "1001_AGE_LT_16"
+when 
+	not(
+	$par:Param(name == "FAMILY1")
+	and $p:Person(person_pk == $par.oValue)
+   	and PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, LT(atom_value,"P16Y"))
+   	)
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало ");
+  datacontext.setRuleResult("1001_AGE_LT_16", false, null);
+end
+
+
+rule "1001_AGE_16_18_EDU"
+ruleflow-group "1001_AGE_16_18_EDU"
+when 
+	$par:Param(name == "FAMILY1")
+	$p:Person(person_pk == $par.oValue)
+	//PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, GE(atom_value,"P16Y"))
+	//PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, LT(atom_value,"P18Y")) 
+	//PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "020018", atom_state == true, atom_value == true)
+
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало" +$p.person_pk);
+  datacontext.setRuleResult("1001_AGE_16_18_EDU", true, $p.person_pk);
+end
+
+rule "1001_AGE_16_18_EDU_N"
+ruleflow-group "1001_AGE_16_18_EDU"
+when 
+	not (
+	$par:Param(name == "FAMILY1")
+	and $p:Person(person_pk == $par.oValue)
+   	and PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, GE(atom_value,"P16Y"))
+	and PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "010012", atom_state == true, LT(atom_value,"P18Y")) 
+	and PersonData(person_pk == $p.person_pk, atom_type == AtomType.UZSFO, atom_id == "020018", atom_state == true, atom_value == true)
+   	)
+then
+  System.out.println(drools.getRule().getName() +":Правило сработало");
+  datacontext.setRuleResult("1001_AGE_16_18_EDU", false, null);
+end
+

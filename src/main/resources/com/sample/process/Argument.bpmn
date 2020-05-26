@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:g="http://www.jboss.org/drools/flow/gpd" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.5.1.Final-v20190425-2005-B1" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_6" isCollection="false" structureRef="java.util.HashMap"/>
+  <bpmn2:itemDefinition id="ItemDefinition_527" isCollection="false" structureRef="java.util.ArrayList"/>
+  <bpmn2:itemDefinition id="ItemDefinition_869" isCollection="false" structureRef="com.sample.helpers.ProcessHelper"/>
+  <bpmn2:itemDefinition id="ItemDefinition_928" isCollection="false" structureRef="java.lang.String"/>
+  <bpmn2:itemDefinition id="ItemDefinition_1381" isCollection="false" structureRef="java.lang.Integer"/>
+  <bpmn2:itemDefinition id="ItemDefinition_1498" isCollection="false" structureRef="java.lang.Boolean"/>
+  <bpmn2:itemDefinition id="ItemDefinition_3" isCollection="false" structureRef="com.sample.processcontext.DataContext"/>
+  <bpmn2:itemDefinition id="ItemDefinition_7" isCollection="false" structureRef="com.sample.processcontext.BlockFunctionDescription"/>
+  <bpmn2:process id="com.sample.bpmn.Argument" tns:packageName="defaultPackage" name="Аргумент" isExecutable="true" processType="Private">
+    <bpmn2:extensionElements>
+      <tns:import name="java.util.HashMap"/>
+      <tns:import name="java.util.ArrayList"/>
+      <tns:import name="com.sample.helpers.ProcessHelper"/>
+      <tns:import name="com.sample.processcontext.DataContext"/>
+      <tns:import name="com.sample.processcontext.BlockFunctionDescription"/>
+    </bpmn2:extensionElements>
+    <bpmn2:property id="datacontext" itemSubjectRef="ItemDefinition_3" name="datacontext"/>
+    <bpmn2:property id="curBFDescription" itemSubjectRef="ItemDefinition_7" name="curBFDescription"/>
+    <bpmn2:property id="formulaItems" itemSubjectRef="ItemDefinition_527" name="formulaItems"/>
+    <bpmn2:property id="curFormulaArgumentNumber" itemSubjectRef="ItemDefinition_1381" name="curFormulaArgumentNumber"/>
+    <bpmn2:property id="curFormulaArgument" itemSubjectRef="ItemDefinition_928" name="curFormulaArgument"/>
+    <bpmn2:property id="curArgumentDefinition" itemSubjectRef="ItemDefinition_928" name="curArgumentDefinition"/>
+    <bpmn2:property id="currentDefinitionName" itemSubjectRef="ItemDefinition_928" name="currentDefinitionName"/>
+    <bpmn2:scriptTask id="_2" name="Hello" scriptFormat="http://www.java.com/java">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[Hello]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>_1-_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      <bpmn2:script>ProcessHelper.incIdent();
+ProcessHelper.out(&quot;Argument:&quot;);
+
+if(datacontext == null) {
+	ProcessHelper.out(&quot;Argument:datacontext == null&quot;);
+}
+
+// Определение текущего блока функций
+currentDefinitionName = datacontext.get(&quot;RESULTDEFINITION&quot;).toString(); 
+String currentDefinitionString = datacontext.defGet(currentDefinitionName); 
+curBFDescription = BlockFunctionDescription.parse(currentDefinitionString);
+
+kcontext.setVariable(&quot;curBFDescription&quot;, curBFDescription);
+kcontext.setVariable(&quot;currentDefinitionName&quot;, currentDefinitionName);
+
+ProcessHelper.out(&quot;Argument(&quot;+curBFDescription.sBlockFunction +&quot;): currentDefinitionName = &quot;+currentDefinitionName);
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:startEvent id="_1">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:outgoing>_1-_2</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="_3">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+    <bpmn2:scriptTask id="ScriptTask_1" name="Определение типа формулы и выделение аргументов" scriptFormat="http://www.java.com/java">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[Определение типа формулы и выделение аргументов]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:script>formulaItems = ProcessHelper.getFormulaItems(curBFDescription.formulaToken);
+//formulaItems.forEach((s) -> System.out.println(s));
+kcontext.setVariable(&quot;formulaItems&quot;, formulaItems);
+
+// тут же задаём начальное условие цикла
+curFormulaArgumentNumber = 0;
+kcontext.setVariable(&quot;curFormulaArgumentNumber&quot;, curFormulaArgumentNumber);</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" tns:priority="1" sourceRef="_2" targetRef="ScriptTask_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" tns:priority="1" sourceRef="ScriptTask_1" targetRef="ExclusiveGateway_5"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Converging">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Diverging">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:scriptTask id="ScriptTask_4" name="Получаем следующий аргумент формулы" scriptFormat="http://www.java.com/java">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[Получаем следующий аргумент формулы]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
+      <bpmn2:script>// Увеличиваем номер текущего аргумента
+// Получаем текущий аргумент
+curFormulaArgumentNumber++;
+curFormulaArgument = formulaItems.get(curFormulaArgumentNumber-1).toString();
+curArgumentDefinition = datacontext.defGet(curFormulaArgument); 
+ProcessHelper.out(&quot;Argument(&quot;+curBFDescription.sBlockFunction +&quot;):вычисляем аргумент &quot;+curFormulaArgument+&quot;=&quot;+curArgumentDefinition);
+
+// Сохраняем вычисленные переменные
+kcontext.setVariable(&quot;curFormulaArgumentNumber&quot;, curFormulaArgumentNumber);
+kcontext.setVariable(&quot;curFormulaArgument&quot;, curFormulaArgument);
+kcontext.setVariable(&quot;curArgumentDefinition&quot;, curArgumentDefinition);
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" tns:priority="1" name="Not All Arguments Evaluated" sourceRef="ExclusiveGateway_2" targetRef="ExclusiveGateway_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" language="http://www.java.com/java">return (curFormulaArgumentNumber &lt; formulaItems.size());</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_6" tns:priority="1" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_4"/>
+    <bpmn2:callActivity id="CallActivity_1" tns:waitForCompletion="true" tns:independent="false" name="Вычисление блока функций" calledElement="com.sample.bpmn.BlockFunction">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[Вычисление блока функций]]></tns:metaValue>
+        </tns:metaData>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>// Для запуска вложенного процесса, надо поменять ему текущий DEFINITION на тот, который надо выполнить
+datacontext.put(&quot;RESULTDEFINITION&quot;,curFormulaArgument);
+kcontext.setVariable(&quot;datacontext&quot;, datacontext);
+ProcessHelper.out(&quot;Argument(&quot;+curBFDescription.sBlockFunction +&quot;):  Инициируется вычисление блока=&quot;+curFormulaArgument);
+</tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>// Восстанавливает текущий объект вычисления
+datacontext.put(&quot;RESULTDEFINITION&quot;,currentDefinitionName);
+kcontext.setVariable(&quot;datacontext&quot;, datacontext);
+</tns:script>
+        </tns:onExit-script>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_8">
+        <bpmn2:dataInput id="DataInput_1" itemSubjectRef="ItemDefinition_3" name="datacontext"/>
+        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="ItemDefinition_3" name="datacontext"/>
+        <bpmn2:inputSet id="InputSet_8" name="Input Set 8">
+          <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_8" name="Output Set 8">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn2:sourceRef>datacontext</bpmn2:sourceRef>
+        <bpmn2:targetRef>DataInput_1</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:targetRef>datacontext</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:callActivity>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" tns:priority="1" sourceRef="CallActivity_1" targetRef="ExclusiveGateway_2"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_4" gatewayDirection="Converging">
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_5" gatewayDirection="Diverging">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" tns:priority="1" sourceRef="ExclusiveGateway_5" targetRef="ExclusiveGateway_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" language="http://www.java.com/java">if (curBFDescription.functionType.name() !=&quot;RULE&quot;) {
+	ProcessHelper.out(&quot;Argument(&quot;+curBFDescription.sBlockFunction +&quot;): curBFDescription.functionType = &quot;+curBFDescription.functionType);
+}
+return curBFDescription.functionType.name() !=&quot;RULE&quot;;</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" tns:priority="1" name="RULE (вычисление аргументов не требуется)" sourceRef="ExclusiveGateway_5" targetRef="ExclusiveGateway_4">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4" language="http://www.java.com/java">if (curBFDescription.functionType.name() ==&quot;RULE&quot;) {
+	//ProcessHelper.out(&quot;Argument(&quot;+curBFDescription.sBlockFunction +&quot;): curBFDescription.functionType = RULE - вычисление аргументов не требуется&quot;);
+}
+return curBFDescription.functionType.name() ==&quot;RULE&quot;;</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_15" tns:priority="1" sourceRef="ExclusiveGateway_2" targetRef="ExclusiveGateway_4">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">return (curFormulaArgumentNumber >= formulaItems.size());</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_16" tns:priority="1" sourceRef="ScriptTask_4" targetRef="CallActivity_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_17" tns:priority="1" sourceRef="ExclusiveGateway_4" targetRef="ScriptTask_2"/>
+    <bpmn2:scriptTask id="ScriptTask_2" name="Bye" scriptFormat="http://www.java.com/java">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[Bye]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script>ProcessHelper.decIdent();
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" tns:priority="1" sourceRef="ScriptTask_2" targetRef="_3"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="com.sample.bpmn.Argument">
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="_2">
+        <dc:Bounds height="48.0" width="80.0" x="526.0" y="80.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1">
+          <dc:Bounds height="21.0" width="41.0" x="545.0" y="93.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="_1">
+        <dc:Bounds height="48.0" width="48.0" x="540.0" y="9.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="_3">
+        <dc:Bounds height="48.0" width="48.0" x="542.0" y="960.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_3"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="283.0" x="426.0" y="190.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4">
+          <dc:Bounds height="42.0" width="270.0" x="432.0" y="194.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="540.0" y="371.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="539.0" y="697.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_4" isExpanded="true">
+        <dc:Bounds height="50.0" width="276.0" x="427.0" y="500.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8">
+          <dc:Bounds height="42.0" width="197.0" x="466.0" y="504.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_CallActivity_1" bpmnElement="CallActivity_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="296.0" x="416.0" y="608.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_10">
+          <dc:Bounds height="21.0" width="234.0" x="447.0" y="622.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_4" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="541.0" y="780.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_12"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_5" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="539.0" y="280.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="509.0" y="865.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_9">
+          <dc:Bounds height="21.0" width="31.0" x="548.0" y="879.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="_1-_2" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_ScriptTask_1">
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="57.0"/>
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="68.0"/>
+        <di:waypoint xsi:type="dc:Point" x="566.0" y="68.0"/>
+        <di:waypoint xsi:type="dc:Point" x="566.0" y="80.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_2">
+        <di:waypoint xsi:type="dc:Point" x="566.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="566.0" y="159.0"/>
+        <di:waypoint xsi:type="dc:Point" x="567.0" y="190.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ExclusiveGateway_5">
+        <di:waypoint xsi:type="dc:Point" x="563.0" y="240.0"/>
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="280.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="539.0" y="722.0"/>
+        <di:waypoint xsi:type="dc:Point" x="352.0" y="720.0"/>
+        <di:waypoint xsi:type="dc:Point" x="353.0" y="608.0"/>
+        <di:waypoint xsi:type="dc:Point" x="349.0" y="396.0"/>
+        <di:waypoint xsi:type="dc:Point" x="540.0" y="396.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17">
+          <dc:Bounds height="84.0" width="90.0" x="128.0" y="547.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="421.0"/>
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="500.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_CallActivity_1" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="658.0"/>
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="697.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="563.0" y="330.0"/>
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="371.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_9"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ExclusiveGateway_4">
+        <di:waypoint xsi:type="dc:Point" x="589.0" y="307.0"/>
+        <di:waypoint xsi:type="dc:Point" x="828.0" y="305.0"/>
+        <di:waypoint xsi:type="dc:Point" x="828.0" y="805.0"/>
+        <di:waypoint xsi:type="dc:Point" x="591.0" y="808.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11">
+          <dc:Bounds height="126.0" width="109.0" x="912.0" y="521.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ExclusiveGateway_4">
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="747.0"/>
+        <di:waypoint xsi:type="dc:Point" x="567.0" y="780.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_CallActivity_1">
+        <di:waypoint xsi:type="dc:Point" x="567.0" y="550.0"/>
+        <di:waypoint xsi:type="dc:Point" x="568.0" y="608.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="830.0"/>
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="865.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="564.0" y="915.0"/>
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="960.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
